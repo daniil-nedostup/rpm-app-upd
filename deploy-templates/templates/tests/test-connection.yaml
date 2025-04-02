@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "rpm-app-upd.fullname" . }}-test-connection"
+  labels:
+    {{- include "rpm-app-upd.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "rpm-app-upd.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never
